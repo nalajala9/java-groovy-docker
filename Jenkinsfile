@@ -20,7 +20,7 @@ node{
    
       stage('Publish Docker Image'){
          withCredentials([string(credentialsId: 'docker_hub', variable: 'docker_hub')]) {
-              sh "docker login -u 20152282 -p ${docker_hub}"
+              sh "docker login -u 20152282 -p ${pass}"
          }
         sh "docker push ${dockerImageName}"
       }
@@ -32,10 +32,10 @@ node{
             def dockerRun= "sudo docker run -p 8082:8080 -d --name ${dockerContainerName} ${dockerImageName}" 
             withCredentials([string(credentialsId: 'deploymentserverpwd', variable: 'dpPWD')]) {
                   sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.118.106.80" 
-                  sh "sshpass -p ${dpPWD} scp -r stopscript.sh ubuntu@18.118.106.80:/home/devops" 
-                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.118.106.80 ${changingPermission}"
-                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.118.106.80 ${scriptRunner}"
-                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.118.106.80 ${dockerRun}"
+                  sh "sshpass -p ${dpPWD} scp -r stopscript.sh ubuntu@18.116.82.43:/home/devops" 
+                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.116.82.43 ${changingPermission}"
+                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.116.82.43 ${scriptRunner}"
+                  sh "sshpass -p ${dpPWD} ssh -o StrictHostKeyChecking=no ubuntu@18.116.82.43 ${dockerRun}"
             }
             
       
